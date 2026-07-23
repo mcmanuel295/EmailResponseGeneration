@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
-
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -17,9 +15,9 @@ import java.util.Map;
 public class EmailGenerationService {
     private final WebClient webClient= WebClient.builder().build();
     @Value("${gemini.api.key}")
-    private String gemini_key;
-    @Value("${gemini.api.url")
-    private String gemini_url;
+    private String geminikey;
+    @Value("${gemini.api.url}")
+    private String geminiUurl;
 
 
     public String generate(EmailRequest emailRequest) {
@@ -32,9 +30,9 @@ public class EmailGenerationService {
         );
 
         String response = webClient.post()
-                .uri(gemini_url)
+                .uri(geminiUurl)
                 .header("Content-Type","application/json")
-                .header("x-goog-api-key",gemini_key)
+                .header("x-goog-api-key",geminikey)
                 .bodyValue(responseBody)
                 .retrieve().bodyToMono(String.class).block();
 
