@@ -1,6 +1,7 @@
 package com.mcmanuel.EmailGeneration.project;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -10,6 +11,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.Map;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class EmailGenerationService {
     private final WebClient webClient= WebClient.builder().build();
@@ -25,17 +27,13 @@ public class EmailGenerationService {
 
         Map<String,String> responseBody = Map.of("input", prompt);
 
-        String tree = webClient.post()
+        String response = webClient.post()
                 .uri(gemini_url+gemini_key)
                 .header("Content-Type","application/json")
                 .bodyValue(responseBody.get("input"))
                 .retrieve().bodyToMono(String.class).block();
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(tree);
-        return root.path("steps").get(1)
-                .path("content").get(0)
-                .path("text").toString();
+        return extractResponseContent(response);
     }
 
     private String buildPrompt(EmailRequest emailRequest) {
@@ -49,5 +47,20 @@ public class EmailGenerationService {
         }
 
         return builder.toString();
+    }
+
+    private String extractResponseContent(String response) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(response);
+            return root.path("steps").get(1)
+                    .path("content").get(0)
+                    .path("text").toString();
+
+        }
+        catch (Exception ex) {
+            log.error("{}", ex.getMessage());
+            return "Error processing request: "+ex.getMessage();
+        }
     }
 }
