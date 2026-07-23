@@ -16,9 +16,9 @@ import java.util.Map;
 public class EmailGenerationService {
     private final WebClient webClient= WebClient.builder().build();
     @Value("${gemini.api.key}")
-    private String gemini_key;
+    private final String gemini_key;
     @Value("${gemini.api.key")
-    private String gemini_url;
+    private final String gemini_url;
 
 
     public String generate(EmailRequest emailRequest) {
