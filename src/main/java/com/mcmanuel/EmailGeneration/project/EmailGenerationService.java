@@ -18,7 +18,8 @@ public class EmailGenerationService {
     private final WebClient webClient= WebClient.builder().build();
     @Value("${gemini.api.key}")
     private String gemini_key;
-    @Value("${gemini.api.key")
+    @Value("${gemini.api.urls" +
+            "")
     private String gemini_url;
 
 
