@@ -8,6 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -25,12 +26,16 @@ public class EmailGenerationService {
 
         String prompt = buildPrompt(emailRequest);
 
-        Map<String,String> responseBody = Map.of("input", prompt);
+        Map<String,String> responseBody = Map.of(
+                "input", prompt,
+                "model","gemini-3.6-flash"
+        );
 
         String response = webClient.post()
-                .uri(gemini_url+gemini_key)
+                .uri(gemini_url)
                 .header("Content-Type","application/json")
-                .bodyValue(responseBody.get("input"))
+                .header("x-goog-api-key",gemini_key)
+                .bodyValue(responseBody)
                 .retrieve().bodyToMono(String.class).block();
 
         return extractResponseContent(response);
