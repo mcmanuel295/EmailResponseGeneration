@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: EmailGeneration
+
+  config:
+    import: optional:file:file.properties
+
+
+gemini:
+  api:
+    key: GEMINI_API_KEY
+    url:  GEMINI_API_URL
