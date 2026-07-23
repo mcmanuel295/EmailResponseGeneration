@@ -3,10 +3,12 @@ package com.mcmanuel.EmailGeneration.project;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.reactive.function.client.WebClient;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
+
 import java.util.Map;
 
 @Service
@@ -14,6 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EmailGenerationService {
     private final WebClient webClient= WebClient.builder().build();
+
     @Value("${gemini.api.key}")
     private String geminikey;
     @Value("${gemini.api.url}")
@@ -34,7 +37,10 @@ public class EmailGenerationService {
                 .header("Content-Type","application/json")
                 .header("x-goog-api-key",geminikey)
                 .bodyValue(responseBody)
-                .retrieve().bodyToMono(String.class).block();
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, clientResponse ->
+                        clientResponse.bodyToMono(String.class).map(body -> new RuntimeException("API error "+body)))
+                .bodyToMono(String.class).block();
 
         return extractResponseContent(response);
     }
