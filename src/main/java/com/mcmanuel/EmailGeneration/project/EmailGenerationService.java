@@ -1,6 +1,7 @@
 package com.mcmanuel.EmailGeneration.project;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import tools.jackson.databind.JsonNode;
@@ -12,6 +13,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EmailGenerationService {
     private final WebClient webClient= WebClient.builder().build();
+    @Value("${gemini.api.key}")
+    private String gemini_key;
+    @Value("${gemini.api.key")
+    private String gemini_url;
 
 
     public String generate(EmailRequest emailRequest) {
@@ -21,6 +26,7 @@ public class EmailGenerationService {
         Map<String,String> responseBody = Map.of("input", prompt);
 
         String tree = webClient.post()
+                .uri(gemini_url+gemini_key)
                 .header("Content-Type","application/json")
                 .bodyValue(responseBody.get("input"))
                 .retrieve().bodyToMono(String.class).block();
