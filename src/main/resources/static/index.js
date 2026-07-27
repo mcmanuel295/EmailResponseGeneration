@@ -24,7 +24,8 @@ function generateResponse() {
         })
         .then(response => response.json())
         .then(data => {
-            outputBox.value = data.response;
+            console.log("Response from backend:", data);
+            outputBox.value = data;
         })
         .catch(error => {
             console.error("Error generating response:", error);

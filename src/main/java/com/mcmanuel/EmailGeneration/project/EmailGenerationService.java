@@ -67,7 +67,7 @@ public class EmailGenerationService {
             JsonNode root = mapper.readTree(response);
             return root.path("steps").get(1)
                     .path("content").get(0)
-                    .path("text").toString();
+                    .path("text").asText();
 
         }
         catch (Exception ex) {
