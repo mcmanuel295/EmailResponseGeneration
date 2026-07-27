@@ -28,14 +28,6 @@ public class EmailGenerationService {
         String prompt = buildPrompt(emailRequest);
 
 
-//        Map<String,Object> responseBody = Map.of(
-//                "contents", new Object[]{
-//                        Map.of("parts",new Object[]{
-//                                Map.of("text",prompt)
-//                        })
-//                }
-//        );
-
         Map<String,Object> responseBody = Map.of(
                 "model","gemini-3.6-flash",
                 "input",prompt
@@ -84,14 +76,4 @@ public class EmailGenerationService {
         }
     }
 }
-/*
-* Map<String, Object> payload = Map.of(
-    "contents", List.of(
-        Map.of(
-            "parts", List.of(
-                Map.of("text", prompt)
-            )
-        )
-    )
-);*/
 
