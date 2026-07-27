@@ -24,27 +24,30 @@ public class EmailGenerationService {
 
 
     public String generate(EmailRequest emailRequest) {
+        try {
+            String prompt = buildPrompt(emailRequest);
 
-        String prompt = buildPrompt(emailRequest);
+            Map<String,Object> responseBody = Map.of(
+                    "model","gemini-3.6-flash",
+                    "input",prompt
+            );
 
 
-        Map<String,Object> responseBody = Map.of(
-                "model","gemini-3.6-flash",
-                "input",prompt
-        );
+            String response = webClient.post()
+                    .uri(geminiUrl)
+                    .header("Content-Type","application/json")
+                    .header("x-goog-api-key",geminikey)
+                    .bodyValue(responseBody)
+                    .retrieve()
+                    .onStatus(HttpStatusCode::isError, clientResponse ->
+                            clientResponse.bodyToMono(String.class).map(body -> new RuntimeException("API error "+body)))
+                    .bodyToMono(String.class).block();
 
-
-        String response = webClient.post()
-                .uri(geminiUrl)
-                .header("Content-Type","application/json")
-                .header("x-goog-api-key",geminikey)
-                .bodyValue(responseBody)
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, clientResponse ->
-                        clientResponse.bodyToMono(String.class).map(body -> new RuntimeException("API error "+body)))
-                .bodyToMono(String.class).block();
-
-        return extractResponseContent(response);
+            return extractResponseContent(response);
+        }
+        catch (Exception ex){
+            return "Exception "+ex.getMessage();
+        }
     }
 
     private String buildPrompt(EmailRequest emailRequest) {
