@@ -20,20 +20,30 @@ public class EmailGenerationService {
     @Value("${gemini.api.key}")
     private String geminikey;
     @Value("${gemini.api.url}")
-    private String geminiUurl;
+    private String geminiUrl;
 
 
     public String generate(EmailRequest emailRequest) {
 
         String prompt = buildPrompt(emailRequest);
 
-        Map<String,String> responseBody = Map.of(
-                "input", prompt,
-                "model","gemini-3.6-flash"
+
+//        Map<String,Object> responseBody = Map.of(
+//                "contents", new Object[]{
+//                        Map.of("parts",new Object[]{
+//                                Map.of("text",prompt)
+//                        })
+//                }
+//        );
+
+        Map<String,Object> responseBody = Map.of(
+                "model","gemini-3.6-flash",
+                "input",prompt
         );
 
+
         String response = webClient.post()
-                .uri(geminiUurl)
+                .uri(geminiUrl)
                 .header("Content-Type","application/json")
                 .header("x-goog-api-key",geminikey)
                 .bodyValue(responseBody)
@@ -47,10 +57,11 @@ public class EmailGenerationService {
 
     private String buildPrompt(EmailRequest emailRequest) {
         StringBuilder builder = new StringBuilder();
-        builder.append("Generate a professional email from the followiwng email content. Please don't add a subject line")
-                .append("original email : ").append(emailRequest.getContent());
-
-
+        builder.append("Generate a professional email from the following email content. Please don't add a subject line")
+                .append("Format the email with proper paragraph breaks and line spacing. Return plain text only.")
+                .append("original email : ")
+                .append(emailRequest.getContent());
+        
         if (emailRequest.getTone()!= null && !emailRequest.getTone().isEmpty()) {
             builder.append("use a ").append(emailRequest.getTone()).append(" tone");
         }
@@ -73,3 +84,14 @@ public class EmailGenerationService {
         }
     }
 }
+/*
+* Map<String, Object> payload = Map.of(
+    "contents", List.of(
+        Map.of(
+            "parts", List.of(
+                Map.of("text", prompt)
+            )
+        )
+    )
+);*/
+
