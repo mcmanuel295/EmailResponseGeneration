@@ -1,4 +1,4 @@
-// Placeholder function for your backend integration
+// Placeholder function for your backend integration~
 function generateResponse() {
         const receivedEmail = document.getElementById('receivedEmail').value;
         const selectedTone = document.getElementById('toneSelect').value;
