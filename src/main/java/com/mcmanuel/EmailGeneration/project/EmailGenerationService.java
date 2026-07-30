@@ -47,7 +47,7 @@ public class EmailGenerationService {
         }
         catch (Exception ex){
             log.error("Error {}",ex.getMessage());
-            return "Exception "+ex.getMessage();
+            return "Exception "+ex.getMessage(); 
         }
     }
 
