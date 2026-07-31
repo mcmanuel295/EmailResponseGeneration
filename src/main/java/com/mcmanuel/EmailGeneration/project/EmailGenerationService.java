@@ -1,5 +1,7 @@
 package com.mcmanuel.EmailGeneration.project;
 
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,7 +67,7 @@ public class EmailGenerationService {
         return builder.toString();
     }
 
-    private String extractResponseContent(String response) {
+    private String extractResponseContent(String response){
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response);
