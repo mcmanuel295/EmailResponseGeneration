@@ -1,7 +1,5 @@
 package com.mcmanuel.EmailGeneration.project;
 
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +25,7 @@ public class EmailGenerationService {
 
     public String generate(EmailRequest emailRequest) {
         try {
+            System.out.println("content :"+emailRequest.getContent()+" tone: "+emailRequest.getTone());
             String prompt = buildPrompt(emailRequest);
 
             Map<String,Object> responseBody = Map.of(
@@ -45,6 +44,7 @@ public class EmailGenerationService {
                             clientResponse.bodyToMono(String.class).map(body -> new RuntimeException("API error "+body)))
                     .bodyToMono(String.class).block();
 
+            System.out.println("response : "+response);
             return extractResponseContent(response);
         }
         catch (Exception ex){
@@ -71,9 +71,11 @@ public class EmailGenerationService {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response);
-            return root.path("steps").get(1)
+                   String generatedResponse = root.path("steps").get(1)
                     .path("content").get(0)
                     .path("text").asText();
+            System.out.println("generated response "+generatedResponse);
+            return generatedResponse;
 
         }
         catch (Exception ex) {

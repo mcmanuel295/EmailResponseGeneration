@@ -1,6 +1,7 @@
 // Placeholder function for your backend integration~
 function generateResponse() {
-        const receivedEmail = document.getElementById('receivedEmail').value;
+        const receivedEmail = document.getElementById('receivedEmail').value
+        console.log("received email:"+ receivedEmail);
         const selectedTone = document.getElementById('toneSelect').value;
         const outputBox = document.getElementById('generatedResponse');
 
@@ -18,11 +19,11 @@ function generateResponse() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                email: receivedEmail,
+                content: receivedEmail,
                 tone: selectedTone
             })
         })
-        .then(response => response.json())
+        .then(response =>response.text())
         .then(data => {
             console.log("Response from backend:", data);
             outputBox.value = data;
