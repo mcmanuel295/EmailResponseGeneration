@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/email")
-@CrossOrigin("*")
 @Slf4j
 public class EmailGenerationController {
     private final EmailGenerationService service;
