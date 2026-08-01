@@ -29,7 +29,7 @@ function generateResponse() {
             outputBox.value = data;
         })
         .catch(error => {
-            console.error("Error generating response: {}", error);
+            console.error("Error generating response: ", error);
             outputBox.value = "Error generating response. Please try again.";
         });
 
