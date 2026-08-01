@@ -21,7 +21,9 @@ function generateResponse() {
             body: JSON.stringify({
                 content: receivedEmail,
                 tone: selectedTone
-            })
+            }),
+            targetAddressSpace: 'local',
+            mode: 'cors'
         })
         .then(response =>response.text())
         .then(data => {

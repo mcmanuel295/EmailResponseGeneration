@@ -9,9 +9,6 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 @Service
 @Configuration
 public class SecurityConfiguration implements WebMvcConfigurer {
@@ -27,15 +24,19 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
     }
 
-//    @Bean
-//    public CorsFilter corsConfig(){
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowedOrigins(Arrays.asList("https://google.com","http://127.0.0.1:5500/src/main/resources/static/**"));
-//        config.setAllowedHeaders(Collections.singletonList("*"));
-//        config.setAllowedMethods(Arrays.asList("POST","GET","DELETE"));
-//
-//        source.registerCorsConfiguration("/**",config);
-//        return new CorsFilter(source);
-//    }
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://127.0.0.1:5500");
+        config.addAllowedOrigin("http://localhost:5500");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        config.addExposedHeader("Access-Control-Allow-Private-Network");
+
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
+
 }
