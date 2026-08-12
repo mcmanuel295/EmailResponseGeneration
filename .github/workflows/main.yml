@@ -64,12 +64,12 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
-
         uses: docker/build-push-action@v7
         with:
           push: true
-          tag: ${{secrets.DOCKERHUB_USERNAME}}/email-generator:${{steps.extract_version.outputs.VERSION}},
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/email-generator:${{steps.extract_version.outputs.VERSION}},
             ${{secrets.DOCKERHUB_USERNAME}}/email-generator:latest
+
           build-args:
             APP_VERSION =${{steps.extract_version.outputs.VERSION}}
 
