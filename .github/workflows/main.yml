@@ -6,24 +6,30 @@ on:
 
 jobs:
   checkout-code:
-    -  name: checkout code
-       uses: actions/checkout@v7
+    runs-on: ubuntu
+    name: checkout code
+    steps:
+      - uses: actions/checkout@v7
 
   setup-jdk:
-    - name: setup jdk
-      runs-on: ubuntu
-      steps:
-        - uses: actions/setup-java@v5
-          with:
+    name: setup jdk
+    runs-on: ubuntu
+    needs: [checkout-code]
+    steps:
+      - uses: actions/setup-java@v5
+        with:
           distribution: temurin
           java-version: '21'
-        - run: java --version
+      - run: java --version
 
-  build jar:
-    - name: build jar
-      steps:
-        - name : 
+  build-jar:
+    name: build jar
+    runs-on : ubuntu
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v7
 
+      - run: mvn clean package -DskipTests
 
   docker:
     runs-on: ubuntu-latest
