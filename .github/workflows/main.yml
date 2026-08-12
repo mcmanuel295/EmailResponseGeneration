@@ -51,8 +51,7 @@ jobs:
 
       - name: extract version
         id: extract_version
-        run: |
-#          echo "VERSION=$(./mvnw exec:exec -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive )">>$GITHUB_OUTPUT
+        run: |          
           VERSION=$(./mvnw exec:exec -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive)
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
