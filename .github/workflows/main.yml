@@ -24,7 +24,7 @@ jobs:
   build:
     name : build project
     needs: [compile]
-    runs-on:
+    runs-on: ubuntu-latest
     steps:
       - run: ./ mvn clean packaage
 
