@@ -19,7 +19,14 @@ jobs:
           java-version: '17'
       - run: java --version
 
-      - run: ./mvn clean package -DskipTests
+      - run: ./mvn clean compile -DskipTests
+
+  build:
+    name : build project
+    needs: [compile]
+    runs-on:
+    steps:
+      - run: ./ mvn clean packaage
 
 
   docker:
