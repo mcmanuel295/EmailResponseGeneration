@@ -1,0 +1,36 @@
+name: email writer pipeline
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  checkout-code:
+    -  name: checkout code
+       uses: actions/checkout@v7
+
+  setup-jdk:
+    - name: setup jdk
+      runs-on: ubuntu
+      steps:
+        - uses: actions/setup-java@v5
+          with:
+          distribution: temurin
+          java-version: '21'
+        - run: java --version
+
+  build jar:
+    - name: build jar
+      steps:
+        - name : 
+
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
