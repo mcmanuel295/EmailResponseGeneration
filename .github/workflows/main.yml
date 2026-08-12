@@ -5,26 +5,22 @@ on:
       - main
 
 jobs:
-  checkout-code:
+  compile :
     runs-on: ubuntu
-    name: checkout code
+    name: Compile project
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: '21'
+          java-version: '17'
       - run: java --version
 
-  build-jar:
-    name: build jar
-    runs-on : ubuntu-latest
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v7
+      - run: ./mvn clean package -DskipTests
 
-      - run: mvn clean package -DskipTests
 
   docker:
     runs-on: ubuntu-latest
