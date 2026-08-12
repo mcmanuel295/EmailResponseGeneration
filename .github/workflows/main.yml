@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  compile :
+  build :
     runs-on: ubuntu-latest
     name: Compile project
     steps:
@@ -21,11 +21,7 @@ jobs:
 
       - run: mvn clean compile -DskipTests
 
-  build:
-    name : build project
-    needs: [compile]
-    runs-on: ubuntu-latest
-    steps:
+
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
@@ -39,11 +35,7 @@ jobs:
       - run: mvn clean package -DskipTests
 
 
-  docker:
-    name: build and push to docker
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
+
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
