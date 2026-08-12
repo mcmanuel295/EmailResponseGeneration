@@ -36,7 +36,6 @@ jobs:
           java-version: '21'
       - run: java --version
 
-      - run: mvn clean compile -DskipTests
       - run: mvn clean package -DskipTests
 
 
