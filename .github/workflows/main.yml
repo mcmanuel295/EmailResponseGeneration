@@ -10,12 +10,7 @@ jobs:
     name: checkout code
     steps:
       - uses: actions/checkout@v7
-
-  setup-jdk:
-    name: setup jdk
-    runs-on: ubuntu
-    needs: [checkout-code]
-    steps:
+      
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
